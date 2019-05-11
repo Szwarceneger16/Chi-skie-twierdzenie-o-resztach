@@ -7,21 +7,21 @@ void uk³ad_kongurencji::dodaj_do_ukladu_rownanie(int w2, int w3)// dodaje kolejn
 {
 	if (!blockate)
 	{
-		vec_a.push_back(w2);
-		vec_n.push_back(w3);
+		vec_a.push_back(w2); // dodanie wspolczynnika a
+		vec_n.push_back(w3); // dodanie wspolczynnika m
 		ilo_n *= w3; //obliczanie N
 	} 
 }
 
 int uk³ad_kongurencji::Rozsz_Eukli(int a, int b, int *x, int *y)
 {
-	if (a == 0)
+	if (a == 0) // zakonczenie gdy jest to ostatnie rownanie
 	{
 		*x = 0, *y = 1;
 		return b;
 	}
 	int x1, y1; // Przechowuje wyniki danego wywoa³ania funkcji 
-	int gcd = Rozsz_Eukli(b%a, a, &x1, &y1);
+	int gcd = Rozsz_Eukli(b%a, a, &x1, &y1); // wywolanie rekurencyjne
 
 	*x = y1 - (b / a) * x1; // uaktualnia wyniki do poprzedniego
 	*y = x1;
@@ -38,14 +38,15 @@ int uk³ad_kongurencji::invmod(int a,int m)
 
 bool const uk³ad_kongurencji::nwd(int a, int b)
 {
-	int x = (a == 0) ? b : nwd(b%a, a);
+	int x = (a == 0) ? b : nwd(b%a, a); // obliczenie NWD i zwrocenie true gdy NWD = 1, w innym przpadku false
 	return (x == 1);
 }
 
-bool uk³ad_kongurencji::czyParamiWzgledniePierwsze(void) {
+bool uk³ad_kongurencji::czyParamiWzgledniePierwsze(void)
+ {
 	for (int i = 0; i + 1 < vec_a.size(); i++)
 		for (int j = i + 1; j < vec_a.size(); j++)
-			if (!nwd(vec_a[i],vec_a[j])) 
+			if (!nwd(vec_a[i],vec_a[j])) // wywolanie nwd dla kazdej pary liczb
 			{ return false; }
 	return true;
 }
@@ -56,8 +57,8 @@ bool uk³ad_kongurencji::rozwiaz_uklad(bool wyswietl_kolejne_kroki)//rozwiazuje u
 	if (vec_a.size() != vec_n.size()) { wyswietl_blad(1); return false; }
 	else if (!czyParamiWzgledniePierwsze()) { wyswietl_blad(2); return false; }
 
-	blockate = true;
-	int N_i=0,M_i=0;
+	blockate = true; //zablokwoanie mozliwosci dodawania do ukladu
+	int suma=0,N_i=0,M_i=0; // suma gaussa oraz skladowe pomocnicze
 
 	if (wyswietl_kolejne_kroki) {std::cout << "Iloczyn wsyztskich m jest równy " << ilo_n << std::endl; }
 
@@ -65,10 +66,10 @@ bool uk³ad_kongurencji::rozwiaz_uklad(bool wyswietl_kolejne_kroki)//rozwiazuje u
 	{
 		N_i = (ilo_n / vec_n[i]);
 		M_i = invmod(N_i, vec_n[i]);
-		suma += vec_a[i] * N_i * M_i;
+		suma += vec_a[i] * N_i * M_i; // suma algorytmu gaussa
 		if (wyswietl_kolejne_kroki) { std::cout << "DLa " << i+1 << " iteracji: " << "SUMA= "<< suma << " | N_" << i+1 << "= "  << N_i << " | M_" << i+1 << "= " << M_i << " " << std::endl; }
 	}
-	suma %= ilo_n;
+	rozwiazanie = suma % ilo_n; // rozwiazanie ukladu, jest to reszta dzielnia sumy przez iloczyn wspolczynnikow modulo
 	return true;
 }
 
