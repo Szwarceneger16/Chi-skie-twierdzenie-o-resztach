@@ -44,9 +44,9 @@ bool const uk³ad_kongurencji::nwd(int a, int b)
 
 bool uk³ad_kongurencji::czyParamiWzgledniePierwsze(void)
  {
-	for (int i = 0; i + 1 < vec_a.size(); i++)
-		for (int j = i + 1; j < vec_a.size(); j++)
-			if (!nwd(vec_a[i],vec_a[j])) // wywolanie nwd dla kazdej pary liczb
+	for (int i = 0; i + 1 < vec_n.size(); i++)
+		for (int j = i + 1; j < vec_n.size(); j++)
+			if (!nwd(vec_n[i],vec_n[j])) // wywolanie nwd dla kazdej pary liczb
 			{ return false; }
 	return true;
 }
